@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9531" systemVersion="15D13b" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="tne-QT-ifu">
+            <objects>
+                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="SwipeCardView" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
+                        <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cKk-C0-C4P" customClass="CardContainer" customModule="SwipeCardView" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="20" width="600" height="580"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="cKk-C0-C4P" firstAttribute="height" secondItem="8bC-Xf-vdC" secondAttribute="height" id="22x-vy-TWI"/>
+                            <constraint firstItem="cKk-C0-C4P" firstAttribute="width" secondItem="8bC-Xf-vdC" secondAttribute="width" id="72Y-nL-KWg"/>
+                            <constraint firstItem="cKk-C0-C4P" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="A1K-8W-rdi"/>
+                            <constraint firstItem="cKk-C0-C4P" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="Fsr-bw-e3H"/>
+                        </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="22x-vy-TWI"/>
+                                <exclude reference="72Y-nL-KWg"/>
+                                <exclude reference="A1K-8W-rdi"/>
+                                <exclude reference="Fsr-bw-e3H"/>
+                            </mask>
+                        </variation>
+                        <variation key="heightClass=regular-widthClass=compact">
+                            <mask key="constraints">
+                                <include reference="22x-vy-TWI"/>
+                                <include reference="72Y-nL-KWg"/>
+                                <include reference="A1K-8W-rdi"/>
+                                <include reference="Fsr-bw-e3H"/>
+                            </mask>
+                        </variation>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="305" y="389"/>
+        </scene>
+    </scenes>
+</document>
