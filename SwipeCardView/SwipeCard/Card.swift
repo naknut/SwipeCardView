@@ -25,8 +25,10 @@ class Card: UIView {
     ///Read only property that should be set to the point where the card was when created.
     private(set) var originalPoint = CGPoint()
     
+    /// The delegate that will be called back when the card 🃏 finishes a swipe.
     var delegate: CardContainerDataSource?
     
+    ///The text to be displayed on the card 🃏
     var text: String?
     private var information: UILabel?
 
