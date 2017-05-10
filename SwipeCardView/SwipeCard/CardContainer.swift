@@ -11,27 +11,27 @@ import UIKit
 /// Protocol for handeling card swipeing
 protocol CardContainerDataSource {
     /// This method should be called if a card 🃏 is swiped to the left
-    func cardSwipedLeft(card: Card)
+    func cardSwipedLeft(_ card: Card)
     ///This method should be called if a card 🃏 is swiped to the right
-    func cardSwipedRight(card: Card)
+    func cardSwipedRight(_ card: Card)
 }
 
 /// This class contans a number of swipeable cards 🃏
 class CardContainer: UIView, CardContainerDataSource {
 
-    private let MAX_BUFFER_SIZE = 2
-    private let CARD_HEIGHT: CGFloat = 386
-    private let CARD_WIDTH: CGFloat = 290
+    fileprivate let MAX_BUFFER_SIZE = 2
+    fileprivate let CARD_HEIGHT: CGFloat = 386
+    fileprivate let CARD_WIDTH: CGFloat = 290
     
-    private var cardsLoadedIndex = 0
-    private var cards = [Card]()
+    fileprivate var cardsLoadedIndex = 0
+    fileprivate var cards = [Card]()
     
-    private var checkButton = UIButton(frame: CGRectMake(60, 550, 59, 59))
-    private var xButton = UIButton(frame: CGRectMake(200, 550, 59, 59))
+    fileprivate var checkButton = UIButton(frame: CGRect(x: 60, y: 550, width: 59, height: 59))
+    fileprivate var xButton = UIButton(frame: CGRect(x: 200, y: 550, width: 59, height: 59))
     
-    private var exampleCardLabels: [String]
+    fileprivate var exampleCardLabels: [String]
     
-    private var isLoaded = false
+    fileprivate var isLoaded = false
     
     override init(frame: CGRect) {
         exampleCardLabels = ["first", "second", "third", "fourth", "last"]
@@ -52,26 +52,26 @@ class CardContainer: UIView, CardContainerDataSource {
         }
     }
     
-    private func setupViews() {
-        xButton.setImage(UIImage(named: "xButton"), forState: UIControlState.Normal)
-        checkButton.setImage(UIImage(named: "checkButton"), forState: UIControlState.Normal)
+    fileprivate func setupViews() {
+        xButton.setImage(UIImage(named: "xButton"), for: UIControlState())
+        checkButton.setImage(UIImage(named: "checkButton"), for: UIControlState())
         self.addSubview(xButton)
         self.addSubview(checkButton)
     }
 
     
-    private func createCard(label: String) -> Card {
-        let card = Card(frame: CGRectMake((self.frame.width - CARD_WIDTH)/2, (self.frame.height - CARD_HEIGHT)/2, CARD_WIDTH, CARD_HEIGHT))
+    fileprivate func createCard(_ label: String) -> Card {
+        let card = Card(frame: CGRect(x: (self.frame.width - CARD_WIDTH)/2, y: (self.frame.height - CARD_HEIGHT)/2, width: CARD_WIDTH, height: CARD_HEIGHT))
         card.text = label
         card.delegate = self
         return card
     }
     
-    private func loadCards() {
+    fileprivate func loadCards() {
         for label in exampleCardLabels {
             cards.append(createCard(label))
         }
-        for (var i = 0; i < cards.count; i++){
+        for i in 0 ..< cards.count {
             if(i == 0) {
                 self.addSubview(cards[i])
             } else {
@@ -83,8 +83,8 @@ class CardContainer: UIView, CardContainerDataSource {
     
     // MARK: - CardContainerDataSource
     
-    func cardSwipedLeft(card: Card) {
-        let finishPoint = CGPointMake(-500, 2.0 * card.yFromCenter + card.originalPoint.y)
+    func cardSwipedLeft(_ card: Card) {
+        let finishPoint = CGPoint(x: -500, y: 2.0 * card.yFromCenter + card.originalPoint.y)
         self.animateCardToPoint(card, finishPoint: finishPoint) { complete in
             card.removeFromSuperview()
             self.cards.removeFirst()
@@ -92,8 +92,8 @@ class CardContainer: UIView, CardContainerDataSource {
         print("LEFT")
     }
     
-    func cardSwipedRight(card: Card) {
-        let finishPoint = CGPointMake(500, 2.0 * card.yFromCenter + card.originalPoint.y);
+    func cardSwipedRight(_ card: Card) {
+        let finishPoint = CGPoint(x: 500, y: 2.0 * card.yFromCenter + card.originalPoint.y);
         self.animateCardToPoint(card, finishPoint: finishPoint) { complete in
             card.removeFromSuperview()
             self.cards.removeFirst()
@@ -104,11 +104,11 @@ class CardContainer: UIView, CardContainerDataSource {
     /**
     Animates a card do a specific location in the container
      */
-    private func animateCardToPoint(card: Card, finishPoint: CGPoint, compleation: (Bool) -> Void) {
-        UIView.animateWithDuration(0.3, animations: { () -> Void in
+    fileprivate func animateCardToPoint(_ card: Card, finishPoint: CGPoint, compleation: @escaping (Bool) -> Void) {
+        UIView.animate(withDuration: 0.3, animations: { () -> Void in
             card.center = finishPoint
-            }) { (complete) -> Void in
+            }, completion: { (complete) -> Void in
                 compleation(complete)
-        }
+        }) 
     }
 }

@@ -11,26 +11,26 @@ import UIKit
 /// The card 🃏 class used by CardContainer for the card views that can be dragged
 class Card: UIView {
     
-    private let ACTION_MARGIN: CGFloat = 120
-    private let SCALE_STRENGTH: CGFloat = 4.0
-    private let SCALE_MAX: CGFloat = 0.93
-    private let ROTATION_MAX: CGFloat = 1.0
-    private let ROTATION_STRENGTH: CGFloat = 320.0
-    private let ROTATION_ANGLE = CGFloat(M_PI/8.0)
+    fileprivate let ACTION_MARGIN: CGFloat = 120
+    fileprivate let SCALE_STRENGTH: CGFloat = 4.0
+    fileprivate let SCALE_MAX: CGFloat = 0.93
+    fileprivate let ROTATION_MAX: CGFloat = 1.0
+    fileprivate let ROTATION_STRENGTH: CGFloat = 320.0
+    fileprivate let ROTATION_ANGLE = CGFloat(.pi/8.0)
     
     ///How far from the center the card is on the X axis.
-    private(set) var xFromCenter: CGFloat = 0.0
+    fileprivate(set) var xFromCenter: CGFloat = 0.0
     ///How far from the center the card is on the Y axis.
-    private(set) var yFromCenter: CGFloat = 0.0
+    fileprivate(set) var yFromCenter: CGFloat = 0.0
     ///Read only property that should be set to the point where the card was when created.
-    private(set) var originalPoint = CGPoint()
+    fileprivate(set) var originalPoint = CGPoint()
     
     /// The delegate that will be called back when the card 🃏 finishes a swipe.
     var delegate: CardContainerDataSource?
     
     ///The text to be displayed on the card 🃏
     var text: String?
-    private var information: UILabel?
+    fileprivate var information: UILabel?
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -43,22 +43,22 @@ class Card: UIView {
     }
     
     override func layoutSubviews() {
-        self.information = UILabel(frame: CGRectMake(0, 50, self.frame.size.width, 100))
-        self.information!.textAlignment = NSTextAlignment.Center
+        self.information = UILabel(frame: CGRect(x: 0, y: 50, width: self.frame.size.width, height: 100))
+        self.information!.textAlignment = NSTextAlignment.center
         self.information!.text = self.text
         self.addSubview(self.information!)
     }
 
-    private func setupView() {
+    fileprivate func setupView() {
         self.layer.cornerRadius = 4;
         self.layer.shadowRadius = 3;
         self.layer.shadowOpacity = 0.2;
-        self.layer.shadowOffset = CGSizeMake(1, 1);
-        self.backgroundColor = UIColor.whiteColor()
-        self.addGestureRecognizer(UIPanGestureRecognizer(target: self, action: "beingDragged:"))
+        self.layer.shadowOffset = CGSize(width: 1, height: 1);
+        self.backgroundColor = UIColor.white
+        self.addGestureRecognizer(UIPanGestureRecognizer(target: self, action: #selector(Card.beingDragged)))
     }
     
-    private func afterSwipeAction() {
+    fileprivate func afterSwipeAction() {
         if (xFromCenter > ACTION_MARGIN) {
             if let dataSource = self.delegate {
                 dataSource.cardSwipedRight(self)
@@ -68,31 +68,31 @@ class Card: UIView {
                 dataSource.cardSwipedLeft(self)
             }
         } else {
-            UIView.animateWithDuration(0.3) {
+            UIView.animate(withDuration: 0.3, animations: {
                 self.center = self.originalPoint
-                self.transform = CGAffineTransformMakeRotation(0)
-            }
+                self.transform = CGAffineTransform(rotationAngle: 0)
+            }) 
         }
     }
     
-    private func beingDragged(gestureRecognizer: UIPanGestureRecognizer) {
-        xFromCenter = gestureRecognizer.translationInView(self).x
-        yFromCenter = gestureRecognizer.translationInView(self).y
+    @objc fileprivate func beingDragged(_ gestureRecognizer: UIPanGestureRecognizer) {
+        xFromCenter = gestureRecognizer.translation(in: self).x
+        yFromCenter = gestureRecognizer.translation(in: self).y
         
         switch (gestureRecognizer.state) {
-        case UIGestureRecognizerState.Began:
+        case UIGestureRecognizerState.began:
             self.originalPoint = self.center
             break
-        case UIGestureRecognizerState.Changed:
+        case UIGestureRecognizerState.changed:
             let rotationStrength = min(xFromCenter / ROTATION_STRENGTH, ROTATION_MAX)
             let rotationAngel = ROTATION_ANGLE * rotationStrength
             let scale = max(1.0 - CGFloat(fabsf(Float(rotationStrength))) / SCALE_STRENGTH, SCALE_MAX)
-            self.center = CGPointMake(self.originalPoint.x + xFromCenter, self.originalPoint.y + yFromCenter)
-            let transform = CGAffineTransformMakeRotation(rotationAngel)
-            let scaleTransform = CGAffineTransformScale(transform, scale, scale)
+            self.center = CGPoint(x: self.originalPoint.x + xFromCenter, y: self.originalPoint.y + yFromCenter)
+            let transform = CGAffineTransform(rotationAngle: rotationAngel)
+            let scaleTransform = transform.scaledBy(x: scale, y: scale)
             self.transform = scaleTransform
             break
-        case UIGestureRecognizerState.Ended:
+        case UIGestureRecognizerState.ended:
             self.afterSwipeAction()
             break
         default:
